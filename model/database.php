@@ -70,5 +70,5 @@ class database {
 		call_user_func_array(array($stmt, 'bind_result'), $params);
 		return true;
 	}
-	
-}*/
+*/	
+}
