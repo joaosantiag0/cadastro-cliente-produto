@@ -17,7 +17,7 @@ class products {
 		) )) {
 			
 			if ($id == null || $id = "" || ! is_integer ( $id )) {
-				$id = $this->getLastUserID ()->keyP + 1;
+				$id = $this->getLastUserID () + 1;
 				
 				if ($id == null)
 					$id = 0;
@@ -64,7 +64,8 @@ class products {
 	/*
 	 * Function for get Product data. @return Array with product data
 	 */
-	private function getProduct($id) {
+	public function getProduct($id) {
+		$result = null;
 		$db = $this->conn->prepare ( "SELECT id, name, amount, value FROM users WHERE keyP=:id" );
 		$db->bindParam ( ":id", $id );
 		try {
@@ -74,7 +75,7 @@ class products {
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}
-		$db->close ();
+		$db = null;
 		return $result;
 	}
 	/*
@@ -106,41 +107,57 @@ class products {
 		}
 		return false;
 	}
-	public function totalValue(){
+	public function totalValue() {
 		$totalValue = 0;
-		try{
-		$db = $this->conn->prepare("SELECT value FROM products WHERE 1");
-		if($db->execute()){
-			while ($r = $db->fetchAll(PDO::FETCH_OBJ)){
-				$totalValue .= $r->value;
+		try {
+			$db = $this->conn->prepare ( "SELECT value FROM products WHERE 1" );
+			if ($db->execute ()) {
+				while ( $r = $db->fetchAll ( PDO::FETCH_OBJ ) ) {
+					$totalValue .= $r->value;
+				}
 			}
-		}
-		} catch (PDOException $e){
-			echo $e->getMessage();
+		} catch ( PDOException $e ) {
+			echo $e->getMessage ();
 		}
 		$db = null;
 		return $totalValue;
 	}
-	public function totalAmount(){
+	public function totalAmount() {
 		$totalAmount = 0;
-		try{
-			$db = $this->conn->prepare("SELECT amount FROM products WHERE 1");
-		if($db->execute()){
-			while ($r = $db->fetchAll(PDO::FETCH_OBJ)){
-				$totalAmount .= $r->amount; 
+		try {
+			$db = $this->conn->prepare ( "SELECT amount FROM products WHERE 1" );
+			if ($db->execute ()) {
+				while ( $r = $db->fetchAll ( PDO::FETCH_OBJ ) ) {
+					$totalAmount .= $r->amount;
+				}
 			}
-		}
-		} catch (PDOException $e){
-			echo $e->getMessage();
+		} catch ( PDOException $e ) {
+			echo $e->getMessage ();
 		}
 		$db = null;
 		return $totalAmount;
 	}
+	/*
+	 * Function to get how many products in database
+	 */
+	public function getProductsCount() {
+		$result = 0;
+		$db = $this->conn->query ( "SELECT count(*) from products WHERE 1" );
+		$result = $db->fetchColumn ();
+		return $result;
+	}
+	/*
+	 * Function to get last product addusers
+	 */
+	public function getLastProduct() {
+		return $this->getProduct ( $this->getLastProductID () );
+	}
 	private function getLastProductID() {
 		$db = $this->conn->prepare ( "SELECT keyP FROM products WHERE 1 ORDER BY keyP DESC LIMIT 1" );
 		try {
-			$db->execute ();
+			if($db->execute ())
 			return $db->fetch ( PDO::FETCH_OBJ );
+			
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}

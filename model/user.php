@@ -15,10 +15,10 @@ class user {
 				$email,
 				$password,
 				$birthday 
-		) ) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		) ) && filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
 			
 			if ($id == null || $id = "" || ! is_integer ( $id )) {
-				$id = $this->getLastUserID ()->keyP + 1;
+				$id = $this->getLastUserID () + 1;
 				
 				if ($id == null)
 					$id = 0;
@@ -77,7 +77,7 @@ class user {
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}
-		$db->close ();
+		$db = null;
 		return $result;
 	}
 	/*
@@ -98,22 +98,37 @@ class user {
 	/*
 	 * Function to remove a user from database
 	 */
-	public function removeUser($id){
-		$db = $this->conn->prepare("DELETE FROM users WHERE keyP=:id");
-		$db->bindParam(":id", $id);
+	public function removeUser($id) {
+		$db = $this->conn->prepare ( "DELETE FROM users WHERE keyP=:id" );
+		$db->bindParam ( ":id", $id );
 		try {
-			if($db->execute()) return true;
-		} catch (PDOException $e){
-			echo $e->getMessage();
+			if ($db->execute ())
+				return true;
+		} catch ( PDOException $e ) {
+			echo $e->getMessage ();
 		}
 		return false;
-	} 
-	
+	}
+	/*
+	 * Function to get how many users in database
+	 */
+	public function getUsersCount() {
+		$result = 0;
+		$db = $this->conn->query ( "SELECT count(*) from users WHERE 1" );
+		$result = $db->fetchColumn ();
+		return $result;
+	}
+	/*
+	 * Function to get last user add
+	 */
+	public function getLastUser() {
+		return $this->getUsers ( $this->getLastUserID () );
+	}
 	private function getLastUserID() {
 		$db = $this->conn->prepare ( "SELECT keyP FROM users WHERE 1 ORDER BY keyP DESC LIMIT 1" );
 		try {
-			$db->execute ();
-			return $db->fetch ( PDO::FETCH_OBJ );
+			if ($db->execute ())
+				return $db->fetch ( PDO::FETCH_OBJ )->keyP;
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}
