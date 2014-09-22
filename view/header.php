@@ -58,11 +58,11 @@
                             <a href="index.php"><i class="fa fa-home fa-fw"></i> Principal</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-male fa-fw"></i> Adicionar Usuário</a>
+                            <a href="index.php?page=user&op=add"><i class="fa fa-male fa-fw"></i> Adicionar Usuário</a>
                             
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-group fa-fw"></i> Listar Usuários</a>
+                            <a href="index.php?page=user&op=lister"><i class="fa fa-group fa-fw"></i> Listar Usuários</a>
 
                         </li>
                         <li>

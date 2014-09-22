@@ -8,7 +8,7 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-gear fa-fw"></i> Funcionamento do sistema
@@ -51,4 +51,5 @@
                    
                 </div>
                 <!-- /.col-lg-8 -->
+             </div>
    <?php include_once 'footer.php';?>

@@ -29,7 +29,7 @@ class user {
 				$db->bindParam ( ":name", $name );
 				$db->bindParam ( ":email", $email );
 				$db->bindParam ( ":password", md5 ( $password ) );
-				$db->bindParam ( ":birthday", $birthday );
+				$db->bindParam ( ":birthday", $this->date_formatter("us", $birthday) );
 				if ($db->execute ()) {
 					$db = null;
 					return true;
@@ -67,7 +67,7 @@ class user {
 	/*
 	 * Function for get User data. @return Array with user data
 	 */
-	private function getUsers($id) {
+	public function getUsers($id) {
 		$db = $this->conn->prepare ( "SELECT id, name, email, password, birthday FROM users WHERE keyP=:id" );
 		$db->bindParam ( ":id", $id );
 		try {
@@ -124,7 +124,7 @@ class user {
 	public function getLastUser() {
 		return $this->getUsers ( $this->getLastUserID () );
 	}
-	private function getLastUserID() {
+	public function getLastUserID() {
 		$db = $this->conn->prepare ( "SELECT keyP FROM users WHERE 1 ORDER BY keyP DESC LIMIT 1" );
 		try {
 			if ($db->execute ())
@@ -133,6 +133,15 @@ class user {
 			echo $e->getMessage ();
 		}
 		return null;
+	}
+	public function date_formatter ($lang, $date){
+		if($lang == "br"){
+			$date = explode("-", $date);
+			return $date[2]."/".$date[1]."/".$date[0];
+		} else {
+			$date = explode("/", $date);
+			return $date[2]."-".$date[1]."-".$date[0];
+		}
 	}
 	private function hasEmpty($fields) {
 		foreach ( $fields as $f ) {
