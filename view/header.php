@@ -10,7 +10,7 @@
 
     <!-- Core CSS - Include with every page -->
     <link href="view/css/bootstrap.min.css" rel="stylesheet">
-    <link href="view/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- SB Admin CSS - Include with every page -->
     <link href="view/css/sb-admin.css" rel="stylesheet">
@@ -21,21 +21,16 @@
     <script src="view/js/bootstrap.min.js"></script>
     <script src="view/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
-    <!-- Page-Level Plugin Scripts - Dashboard -->
+    <!-- Page-Level Plugin Scripts - Dashboard --
     <script src="view/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="view/js/plugins/morris/morris.js"></script>
-
+	-->
     <!-- SB Admin Scripts - Include with every page -->
     <script src="view/js/sb-admin.js"></script>
 
     <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
     <script src="view/js/demo/dashboard-demo.js"></script>
 
-    <script type="text/javascript">
-    $(".modal").on("click", function(){
-    	$(".btn").button();
-    });
-    </script>
 
 </head>
 
@@ -55,7 +50,7 @@
                     <ul class="nav" id="side-menu">
                        
                         <li>
-                            <a href="index.php"><i class="fa fa-home fa-fw"></i> Principal</a>
+                            <a href="index.php?page=index&op=index"><i class="fa fa-home fa-fw"></i> Principal</a>
                         </li>
                         <li>
                             <a href="index.php?page=user&op=add"><i class="fa fa-male fa-fw"></i> Adicionar Usuário</a>

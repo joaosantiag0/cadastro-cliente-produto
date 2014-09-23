@@ -1,17 +1,15 @@
 <?php
 require_once 'model/user.php';
-
 class userController {
 	public $success = false;
 	protected $error = false;
 	protected $msg = null;
 	protected $msgErr = null;
-	
-	public function add(){
-		$user = new user();
+	public function add() {
+		$user = new user ();
 		
-		if($_POST){
-			if($user->addUser($_POST['name'], $_POST['email'], $_POST['password'], $_POST['birthday'])){
+		if ($_POST) {
+			if ($user->addUser ( $_POST ['name'], $_POST ['email'], $_POST ['password'], $_POST ['birthday'], $_POST ['id'] )) {
 				$this->success = true;
 				$this->msg = "Usuário cadastrado com sucesso!";
 			} else {
@@ -23,9 +21,61 @@ class userController {
 		$error = $this->error;
 		$msg = $this->msg;
 		$msgErr = $this->msgErr;
-		$lastID = $user->getLastUserID() + 1;
+		$lastID = $user->getLastUserID () + 1;
 		require_once 'view/user_add_view.php';
 	}
-	
-	public function lister()
+	public function lister() {
+		$user = new user ();
+		$allUsers = $user->getAllUsers ();
+		foreach ( $allUsers as $u ) {
+			$u->birthday = $user->date_formatter ( "br", $u->birthday );
+		}
+		
+		$success = $this->success;
+		$msg = $this->msg;
+		$error = $this->error;
+		$msgErr = $this->msgErr;
+		require_once 'view/user_lister_view.php';
+	}
+	public function del() {
+		$id = $_GET ['id'];
+		$user = new user ();
+		if ($user->removeUser ( $id )) {
+			$this->success = true;
+			$this->msg = "Usuário removido com sucesso!";
+		} else {
+			$this->error = true;
+			$this->msgErr = "Ocorreu um erro ao tentar excluir o usuário! Por favor, tente novamente...";
+		}
+		$this->lister ();
+	}
+	public function edit() {
+		$id = $_GET ['id'];
+		$user = new user ();		
+		if ($_POST) {
+			if ($user->editUser ( $_POST ['keyP'], $_POST ['name'], $_POST ['email'], $_POST ['password'], $user->date_formatter("us", $_POST ['birthday']), $_POST ['id'] )) {
+				$this->success = true;
+				$this->msg = "Usuário editado com sucesso!";
+			} else {
+				$this->error = true;
+				$this->msgErr = "Ocorreu um erro ao editar! Por favor, tente novamente, ou entre em contato com nossa equipe!";
+			}
+		}
+		
+		
+
+		$userData = $user->getUsers ( $id );
+		$userData->birthday = $user->date_formatter ( "br", $userData->birthday );
+		$keyP = $id;
+		$name = $userData->name;
+		$email = $userData->email;
+		$id = $userData->id;
+		$birthday = $userData->birthday;
+		
+		$success = $this->success;
+		$msg = $this->msg;
+		$error = $this->error;
+		$msgErr = $this->msgErr;
+		require_once 'view/user_edit_view.php';
+	}
 }
