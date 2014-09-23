@@ -63,6 +63,11 @@ jQuery("button[type='submit']").click(function(){
 					<form action="index.php?page=user&op=edit&id=<?php echo $keyP?>" method="post"
 						role="form" id="register">
 
+						<div class="form-group" id="idField">
+							<label class="control-label">ID:<span id="idLabel"></span></label> <input
+								value="<?php echo $id?>" type="text" name="id" id="id"
+								class="form-control">
+						</div>
 						<div class="form-group" id="nameField">
 							<label class="control-label">Nome:<span id="nameLabel"></span></label>
 							<input value="<?php echo $name?>" type="text" id="name"
@@ -73,12 +78,6 @@ jQuery("button[type='submit']").click(function(){
 							<input value="<?php echo $email?>" type="text" id="email"
 								name="email" class="form-control">
 						</div>
-						<div class="form-group" id="idField">
-							<label class="control-label">ID:<span id="idLabel"></span></label> <input
-								value="<?php echo $id?>" type="text" name="id" id="id"
-								class="form-control">
-						</div>
-
 						<div class="form-group" id="birthdayField">
 							<label class="control-label">Aniversário: <span
 								id="birthdayLabel"></span></label> <input value="<?php echo $birthday ?>" maxlength="10"

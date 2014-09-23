@@ -66,15 +66,16 @@ jQuery("button[type='submit']").click(function(){
 							<label class="control-label">Nome:<span id="nameLabel"></span></label> <input type="text" id="name" name="name"
 								class="form-control">
 						</div>
+						<div class="form-group" id="idField">
+							<label class="control-label">ID:<span id="idLabel"></span></label> <input
+								value="<?php echo $id?>" type="text" name="id" id="id"
+								class="form-control">
+						</div>
 						<div class="form-group" id="emailField">
 							<label class="control-label">Email: <span id="emailLabel"></span></label> <input type="text" id="email" name="email"
 								class="form-control">
 						</div>
-						<div class="form-group" id="idField">
-							<label class="control-label">ID:<span id="idLabel"></span></label> <input type="text" name="id"
-								value="<?php echo $lastID?>" id="id" class="form-control" >
-						</div>
-							
+						
 							<div class="form-group" id="birthdayField">
 								<label class="control-label">Aniversário: <span id="birthdayLabel"></span></label> <input maxlength="10" type="text" name="birthday"
 									id="birthday" class="form-control">
