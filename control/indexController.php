@@ -8,6 +8,7 @@ class indexController {
 		$totalUsers = $user->getUsersCount();
 		$totalProducts = $product->getProductsCount();
 		$lastUser = $user->getLastUser()->name;
+		$product->getAllProducts();
 		$lastProduct = $product->getLastProduct()->name;
 		$totalProductsValue = $product->totalValue();
 		$totalProductsAmount = $product->totalAmount();
