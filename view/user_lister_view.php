@@ -27,8 +27,8 @@
 				</div>
 				<!-- /.panel-heading -->
 				<div class="panel-body">
-				<?php if ($success):?><div class="alert alert-success"><?php echo $msg?></div><?php endif;?>
-				<?php if ($error):?><div class="alert alert-danger"><?php echo $msgErr?></div><?php endif;?>
+				<?php if ($success):?><div class="alert alert-success"><?php echo $msg?></div>
+				<?php else: if ($msg > 0):?><div class="alert alert-danger"><?php echo $msg?></div><?php endif; endif;?>
 				<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover">
 						<thead>

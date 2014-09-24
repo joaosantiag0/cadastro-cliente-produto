@@ -17,7 +17,7 @@ class user {
 				$birthday 
 		) ) && filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
 			
-			if ($id == null || $id = "") {
+			if ($id == null || $id == "") {
 				$id = $this->getLastUserID () + 1;
 				
 				if ($id == null)
