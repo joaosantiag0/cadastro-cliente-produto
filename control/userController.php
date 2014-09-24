@@ -67,9 +67,4 @@ class userController {
 		require_once 'view/user_edit_view.php';
 	}
 	
-	public function search(){
-		$query = $_POST['query'];
-		$products = new products();
-	}
-	
 }
