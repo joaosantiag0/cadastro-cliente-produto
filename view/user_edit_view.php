@@ -1,4 +1,45 @@
 <?php include_once 'header.php'; ?>
+<script type="text/javascript">
+<!--
+window.onload = function (){
+	jQuery("#birthday").keypress(function (e){
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			return false;
+		}
+		jQuery("#birthday").keyup(function (e){
+			var value = this.value.length;
+			if(value == 2 || value == 5) jQuery(this).val(this.value+"/");
+		});
+	});
+	jQuery("#email").keypress(function(){
+		var testeEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+		if(!testeEmail.test(this.value)){
+		jQuery("#emailField").addClass("has-error");
+		jQuery("#emailLabel").html("Campo obrigatório!");
+	} else {
+		jQuery("#emailField").removeClass("has-error").addClass("has-success");
+		jQuery("#emailLabel").html(" ");
+	}
+});
+	jQuery("button[type='submit']").click(function(){
+		var result = true;
+		jQuery("form#register :input").each(function(){
+		var value = this.value;
+		var id = jQuery(this).attr("id");
+		if(value.length == 0 && id != "submit"){
+			jQuery("#"+id+"Field").addClass("has-error");
+			jQuery("#"+id+"Label").html("Campo obrigatório!");
+			result = false;
+		} else {
+			jQuery("#"+id+"Field").addClass("has-success");
+			jQuery("#"+id+"Label").html("");
+		}
+});
+return result;
+});
+};
+//-->
+</script>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
@@ -17,12 +58,12 @@
 				<div class="panel-body">
 				<?php if ($success):?><div class="alert alert-success"><?php echo $msg?></div>
 				<?php else: if ($msg > 0):?><div class="alert alert-error"><?php echo $msg?></div><?php endif; endif;?>
-					<form action="index.php?page=user&op=edit&id=<?php echo $keyP?>" method="post"
-						role="form" id="register">
+					<form action="index.php?page=user&op=edit&id=<?php echo $keyP?>"
+						method="post" role="form" id="register">
 
 						<div class="form-group" id="idField">
-							<label class="control-label">ID:<span id="idLabel"></span></label> <input
-								value="<?php echo $id?>" type="text" name="id" id="id"
+							<label class="control-label">ID:<span id="idLabel"></span></label>
+							<input value="<?php echo $id?>" type="text" name="id" id="id"
 								class="form-control">
 						</div>
 						<div class="form-group" id="nameField">
@@ -37,14 +78,15 @@
 						</div>
 						<div class="form-group" id="birthdayField">
 							<label class="control-label">Aniversário: <span
-								id="birthdayLabel"></span></label> <input value="<?php echo $birthday ?>" maxlength="10"
-								type="text" name="birthday" id="birthday" class="form-control">
+								id="birthdayLabel"></span></label> <input
+								value="<?php echo $birthday ?>" maxlength="10" type="text"
+								name="birthday" id="birthday" class="form-control">
 						</div>
 						<div class="form-group" id="passwordField">
 							<label class="control-label">Senha:<span id="passwordLabel"></span></label>
 							<input type="password" name="password" class="form-control"
-								id="password">
-								Por medida de segurança, não guardamos a senha, por favor, insira manualmente.
+								id="password"> Por medida de segurança, não guardamos a senha,
+							por favor, insira manualmente.
 						</div>
 						<input type="hidden" name="keyP" value="<?php echo $keyP?>">
 						<button type="submit" id="submit" class="btn btn-default">Cadastrar</button>
