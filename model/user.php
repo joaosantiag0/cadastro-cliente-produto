@@ -17,7 +17,7 @@ class user {
 				$birthday 
 		) ) && filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
 			
-			if ($id == null || $id = "" || ! is_integer ( $id )) {
+			if ($id == null || $id = "") {
 				$id = $this->getLastUserID () + 1;
 				
 				if ($id == null)
@@ -52,7 +52,7 @@ class user {
 			$db->bindParam ( ":name", $name );
 			$db->bindParam ( ":email", $email );
 			$db->bindParam ( ":password", md5 ( $password ) );
-			$db->bindParam ( ":birthday", $birthday );
+			$db->bindParam ( ":birthday", $this->date_formatter("us", $birthday) );
 			$db->bindParam ( ":keyP", $keyP );
 			if ($db->execute ()) {
 				$db = null;
@@ -78,6 +78,7 @@ class user {
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}
+		$result->birthday = $this->date_formatter("br", $result->birthday);
 		$db = null;
 		return $result;
 	}
@@ -94,6 +95,10 @@ class user {
 			echo $e->getMessage ();
 		}
 		$db = null;
+		foreach ( $result as $u ) {
+			$u->birthday = $this->date_formatter ( "br", $u->birthday );
+		}
+		
 		return $result;
 	}
 	/*
@@ -136,9 +141,14 @@ class user {
 		return null;
 	}
 	public function date_formatter($lang, $date) {
+		
 		if ($lang == "br") {
 			$date = explode ( "-", $date );
-			return $date [2] . "/" . $date [1] . "/" . $date [0];
+			if(count($date) > 0)
+			$date = $date [2] . "/" . $date [1] . "/" . $date [0];
+			
+			if($date != "//")
+				return $date; 
 		} else {
 			$date = explode ( "/", $date );
 			return $date [2] . "-" . $date [1] . "-" . $date [0];

@@ -1,7 +1,7 @@
 <?php
 require_once 'model/user.php';
 class userController {
-	public $success = false;
+	protected $success = false;
 	protected $error = false;
 	protected $msg = null;
 	protected $msgErr = null;
@@ -27,9 +27,6 @@ class userController {
 	public function lister() {
 		$user = new user ();
 		$allUsers = $user->getAllUsers ();
-		foreach ( $allUsers as $u ) {
-			$u->birthday = $user->date_formatter ( "br", $u->birthday );
-		}
 		
 		$success = $this->success;
 		$msg = $this->msg;
@@ -53,7 +50,7 @@ class userController {
 		$id = $_GET ['id'];
 		$user = new user ();		
 		if ($_POST) {
-			if ($user->editUser ( $_POST ['keyP'], $_POST ['name'], $_POST ['email'], $_POST ['password'], $user->date_formatter("us", $_POST ['birthday']), $_POST ['id'] )) {
+			if ($user->editUser ( $_POST ['keyP'], $_POST ['name'], $_POST ['email'], $_POST ['password'], $_POST ['birthday'], $_POST ['id'] )) {
 				$this->success = true;
 				$this->msg = "Usuário editado com sucesso!";
 			} else {
@@ -65,7 +62,6 @@ class userController {
 		
 
 		$userData = $user->getUsers ( $id );
-		$userData->birthday = $user->date_formatter ( "br", $userData->birthday );
 		$keyP = $id;
 		$name = $userData->name;
 		$email = $userData->email;

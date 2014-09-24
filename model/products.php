@@ -9,15 +9,16 @@ class products {
 	/*
 	 * Function for add product @return bool if user is add
 	 */
-	public function addUser($name, $amount, $value, $id = NULL) {
+	public function addProduct($name, $amount, $value, $id = NULL) {
 		if (! $this->hasEmpty ( array (
 				$name,
 				$amount,
 				$value 
 		) )) {
-			
-			if ($id == null || $id = "" || ! is_integer ( $id )) {
-				$id = $this->getLastUserID () + 1;
+			echo $id;
+			$value = $this->value_formatter("us", $value);
+			if ($id == null || $id = "") {
+				$id = $this->getLastProductID() + 1;
 				
 				if ($id == null)
 					$id = 0;
@@ -26,7 +27,7 @@ class products {
 				$db = $this->conn->prepare ( "INSERT INTO products(id,name,amount,value) VALUES(:id,:name,:amount,:value)" );
 				$db->bindParam ( ":id", $id );
 				$db->bindParam ( ":name", $name );
-				$db->bindParam ( "amount", $amount );
+				$db->bindParam ( ":amount", $amount );
 				$db->bindParam ( ":value", $value );
 				if ($db->execute ()) {
 					$db = null;
@@ -75,6 +76,7 @@ class products {
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}
+		$result = $this->value_formatter("br", $result->value);
 		$db = null;
 		return $result;
 	}
@@ -89,6 +91,9 @@ class products {
 			}
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
+		}
+		foreach ($result as $r){
+			$r->value = $this->value_formatter("br", $r->value);
 		}
 		$db = null;
 		return $result;
@@ -110,10 +115,10 @@ class products {
 	public function totalValue() {
 		$totalValue = 0;
 		try {
-			$db = $this->conn->prepare ( "SELECT value FROM products WHERE 1" );
+			$db = $this->conn->prepare ( "SELECT value, amount FROM products WHERE 1" );
 			if ($db->execute ()) {
-				while ( $r = $db->fetchAll ( PDO::FETCH_OBJ ) ) {
-					$totalValue .= $r->value;
+				foreach ( $db->fetchAll ( PDO::FETCH_OBJ ) as $r ) {
+					$totalValue += $r->value*$r->amount;
 				}
 			}
 		} catch ( PDOException $e ) {
@@ -127,8 +132,8 @@ class products {
 		try {
 			$db = $this->conn->prepare ( "SELECT amount FROM products WHERE 1" );
 			if ($db->execute ()) {
-				while ( $r = $db->fetchAll ( PDO::FETCH_OBJ ) ) {
-					$totalAmount .= $r->amount;
+				foreach ($db->fetchAll ( PDO::FETCH_OBJ ) as $r ) {
+					$totalAmount += $r->amount;
 				}
 			}
 		} catch ( PDOException $e ) {
@@ -152,11 +157,21 @@ class products {
 	public function getLastProduct() {
 		return $this->getProduct ( $this->getLastProductID () );
 	}
-	private function getLastProductID() {
+	public function value_formatter($lang, $value){
+		if($lang == "br"){
+			return number_format($value, 2, ',', '.');
+		} else {
+			$value = str_replace(".", "", $value);
+			$value = str_replace(",", ".", $value);
+			return $value;
+		}
+		return null;
+	}
+	public function getLastProductID() {
 		$db = $this->conn->prepare ( "SELECT keyP FROM products WHERE 1 ORDER BY keyP DESC LIMIT 1" );
 		try {
 			if($db->execute ())
-			return $db->fetch ( PDO::FETCH_OBJ );
+			return $db->fetch ( PDO::FETCH_OBJ )->keyP;
 			
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
