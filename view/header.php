@@ -59,7 +59,7 @@
                         	<a href="index.php?page=product&op=add"><i class="fa fa-plus-square fa-fw"></i> Adicionar Produto </a>
                         </li>
                         <li>
-                        	<a href="index.php?page=product&op=lister"><i class="fa fa-shopping-cart fa-fw"></i> Listar Produtoss </a>
+                        	<a href="index.php?page=product&op=lister"><i class="fa fa-shopping-cart fa-fw"></i> Listar Produtos </a>
                         </li>
                     </ul>
                     <!-- /#side-menu -->
