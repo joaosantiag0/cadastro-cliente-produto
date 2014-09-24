@@ -57,7 +57,7 @@ return result;
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 				<?php if ($success):?><div class="alert alert-success"><?php echo $msg?></div>
-				<?php else: if ($msg > 0):?><div class="alert alert-error"><?php echo $msg?></div><?php endif; endif;?>
+				<?php else: if (strlen($msg) > 0):?><div class="alert alert-error"><?php echo $msg?></div><?php endif; endif;?>
 					<form action="index.php?page=user&op=edit&id=<?php echo $keyP?>"
 						method="post" role="form" id="register">
 

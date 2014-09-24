@@ -15,6 +15,7 @@ class userController {
 				$this->msg = "Ocorreu um erro ao cadastrar! Por favor, tente novamente, ou entre em contato com nossa equipe!";
 			}
 		}
+		
 		$success = $this->success;
 		$msg = $this->msg;
 		$lastID = $user->getLastUserID () + 1;

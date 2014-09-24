@@ -25,11 +25,13 @@ class user {
 			}
 			try {
 				$db = $this->conn->prepare ( "INSERT INTO users(id,name,email,password,birthday) VALUES(:id,:name,:email,:password,:birthday)" );
+				$pw = md5 ( $password );
+				$bday = $this->date_formatter ( "us", $birthday );
 				$db->bindParam ( ":id", $id );
 				$db->bindParam ( ":name", $name );
 				$db->bindParam ( ":email", $email );
-				$db->bindParam ( ":password", md5 ( $password ) );
-				$db->bindParam ( ":birthday", $this->date_formatter ( "us", $birthday ) );
+				$db->bindParam ( ":password", $pw );
+				$db->bindParam ( ":birthday", $bday );
 				if ($db->execute ()) {
 					$db = null;
 					return true;
@@ -48,11 +50,13 @@ class user {
 	public function editUser($keyP, $name, $email, $password, $birthday, $id) {
 		try {
 			$db = $this->conn->prepare ( "UPDATE users SET id=:id, name=:name, email=:email, password=:password, birthday=:birthday where keyP=:keyP" );
+			$bday = $this->date_formatter("us", $birthday);
+			$pw = md5($password);
 			$db->bindParam ( ":id", $id );
 			$db->bindParam ( ":name", $name );
 			$db->bindParam ( ":email", $email );
-			$db->bindParam ( ":password", md5 ( $password ) );
-			$db->bindParam ( ":birthday", $this->date_formatter("us", $birthday) );
+			$db->bindParam ( ":password", $pw );
+			$db->bindParam ( ":birthday", $bday );
 			$db->bindParam ( ":keyP", $keyP );
 			if ($db->execute ()) {
 				$db = null;
@@ -133,8 +137,18 @@ class user {
 	public function getLastUserID() {
 		$db = $this->conn->prepare ( "SELECT keyP FROM users WHERE 1 ORDER BY keyP DESC LIMIT 1" );
 		try {
-			if ($db->execute ())
-				return $db->fetch ( PDO::FETCH_OBJ )->keyP;
+			if ($db->execute ()){
+				$fetch = $db->fetch ( PDO::FETCH_OBJ );
+				 if(isset($fetch->keyP)){
+				 	
+				 	return $fetch->keyP;
+				 } else {
+				 	
+				 	return 0;
+				 }
+			} else {
+				print_r($db->errorInfo());
+			}
 		} catch ( PDOException $e ) {
 			echo $e->getMessage ();
 		}

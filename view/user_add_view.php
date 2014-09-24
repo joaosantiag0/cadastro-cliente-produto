@@ -59,7 +59,7 @@ jQuery("button[type='submit']").click(function(){
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 				<?php if ($success):?><div class="alert alert-success"><?php echo $msg?></div>
-				<?php else: if ($msg > 0):?><div class="alert alert-danger"><?php echo $msg?></div><?php endif; endif;?>
+				<?php else: if (strlen($msg) > 0):?><div class="alert alert-danger"><?php echo $msg?></div><?php endif; endif;?>
 					<form action="index.php?page=user&op=add" method="post" role="form"
 						id="register">
 
@@ -69,7 +69,7 @@ jQuery("button[type='submit']").click(function(){
 						</div>
 						<div class="form-group" id="idField">
 							<label class="control-label">ID:<span id="idLabel"></span></label>
-							<input value="<?php echo $id?>" type="text" name="id" id="id"
+							<input value="<?php echo $lastID?>" type="text" name="id" id="id"
 								class="form-control">
 						</div>
 						<div class="form-group" id="emailField">
